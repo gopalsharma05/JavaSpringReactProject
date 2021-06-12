@@ -13,10 +13,18 @@ class AddProject extends Component {
       description: "",
       start_date: "",
       end_date: "",
+      errors: {},
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  //life cycle hook
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
   }
 
   onChange(e) {
@@ -37,81 +45,87 @@ class AddProject extends Component {
       end_date: this.state.end_date,
     };
 
-    console.log(newProject);
-    console.log(JSON.stringify(newProject));
+    // console.log(newProject);
+    // console.log(JSON.stringify(newProject));
 
     this.props.CreateProject(newProject, this.props.history);
   }
 
   render() {
+    const { errors } = this.state;
     return (
-      <div className="project">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-8 m-auto">
-              <h5 className="display-4 text-center">
-                Create / Edit Project form
-              </h5>
-              <hr />
-              <form onSubmit={this.onSubmit}>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    className="form-control form-control-lg "
-                    placeholder="Project Name"
-                    name="projectName"
-                    value={this.state.projectName}
-                    onChange={this.onChange.bind(this)}
-                  />
-                </div>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    className="form-control form-control-lg"
-                    placeholder="Unique Project ID"
-                    name="projectIdentifier"
-                    value={this.state.projectIdentifier}
-                    onChange={this.onChange.bind(this)}
-                  />
-                </div>
-                {
-                  //<!-- disabled for Edit Only!! remove "disabled" for the Create operation -->
-                }
-                <div className="form-group">
-                  <textarea
-                    className="form-control form-control-lg"
-                    placeholder="Project Description"
-                    name="description"
-                    value={this.state.description}
-                    onChange={this.onChange.bind(this)}
-                  ></textarea>
-                </div>
-                <h6>Start Date</h6>
-                <div className="form-group">
-                  <input
-                    type="date"
-                    className="form-control form-control-lg"
-                    name="start_date"
-                    value={this.state.start_date}
-                    onChange={this.onChange.bind(this)}
-                  />
-                </div>
-                <h6>Estimated End Date</h6>
-                <div className="form-group">
-                  <input
-                    type="date"
-                    className="form-control form-control-lg"
-                    name="end_date"
-                    value={this.state.end_date}
-                    onChange={this.onChange.bind(this)}
-                  />
-                </div>
+      <div>
+        <div className="project">
+          <div className="container">
+            <div className="row">
+              <div className="col-md-8 m-auto">
+                <h5 className="display-4 text-center">
+                  Create / Edit Project form
+                </h5>
+                <hr />
+                <form onSubmit={this.onSubmit}>
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      className="form-control form-control-lg "
+                      placeholder="Project Name"
+                      name="projectName"
+                      value={this.state.projectName}
+                      onChange={this.onChange.bind(this)}
+                    />
+                    <p>{errors.projectName}</p>
+                  </div>
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      className="form-control form-control-lg"
+                      placeholder="Unique Project ID"
+                      name="projectIdentifier"
+                      value={this.state.projectIdentifier}
+                      onChange={this.onChange.bind(this)}
+                    />
+                    <p>{errors.projectIdentifier}</p>
+                  </div>
+                  {
+                    //<!-- disabled for Edit Only!! remove "disabled" for the Create operation -->
+                  }
+                  <div className="form-group">
+                    <textarea
+                      className="form-control form-control-lg"
+                      placeholder="Project Description"
+                      name="description"
+                      value={this.state.description}
+                      onChange={this.onChange.bind(this)}
+                    ></textarea>
+                    <p>{errors.description}</p>
+                  </div>
+                  <h6>Start Date</h6>
+                  <div className="form-group">
+                    <input
+                      type="date"
+                      className="form-control form-control-lg"
+                      name="start_date"
+                      value={this.state.start_date}
+                      onChange={this.onChange.bind(this)}
+                    />
+                  </div>
+                  <h6>Estimated End Date</h6>
+                  <div className="form-group">
+                    <input
+                      type="date"
+                      className="form-control form-control-lg"
+                      name="end_date"
+                      value={this.state.end_date}
+                      onChange={this.onChange.bind(this)}
+                    />
+                  </div>
 
-                <input
-                  type="submit"
-                  className="btn btn-primary btn-block mt-4"
-                />
-              </form>
+                  <input
+                    type="submit"
+                    className="btn btn-primary btn-block mt-4"
+                  />
+                </form>
+              </div>
             </div>
           </div>
         </div>
@@ -122,6 +136,14 @@ class AddProject extends Component {
 
 AddProject.propTypes = {
   CreateProject: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired,
 };
 
-export default connect(null, { CreateProject })(AddProject);
+const mapStateToProps = (state) => ({
+  // state.errors come from our reducers...(jo error apan ko request se aaye...vo action se jaake
+  // reducer se yha aaenge (eg...id already exist...jo apan set kiye the))
+
+  errors: state.errors,
+});
+
+export default connect(mapStateToProps, { CreateProject })(AddProject);
