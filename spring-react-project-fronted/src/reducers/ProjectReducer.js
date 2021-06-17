@@ -1,8 +1,8 @@
 import { GET_PROJECTS } from "../actions/Types";
 
 const initialState = {
-  projects: [],
-  project: {},
+  projects: [], // to get all projects using an array
+  project: {}, // will be used when we get project by id
 };
 
 export default function (state = initialState, action) {

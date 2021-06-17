@@ -11,6 +11,10 @@ class Dashboard extends Component {
   }
 
   render() {
+    const { projects } = this.props.project;
+    // above is destructuring .. inside the this.props.project there is project //array so we can directly write it into
+    //{ } to access it or  also we can store that into another variable like const var=this.props.project.projects
+
     return (
       <div className="projects">
         <div className="container">
@@ -24,7 +28,12 @@ class Dashboard extends Component {
               <br />
               <br />
 
-              <ProjectItem />
+              {
+                //as we want to write JS code inside the JSX, so need to use {}
+                projects.map((project) => (
+                  <ProjectItem key={project.id} project={project} />
+                ))
+              }
             </div>
           </div>
         </div>
