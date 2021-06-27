@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_ERRORS, GET_PROJECTS } from "./Types";
+import { GET_ERRORS, GET_PROJECTS, GET_PROJECT } from "./Types";
 
 export const CreateProject = (project, history) => async (dispatch) => {
   try {
@@ -18,6 +18,15 @@ export const GetProjects = () => async (dispatch) => {
   const res = await axios.get("http://localhost:8080/api/project/all");
   dispatch({
     type: GET_PROJECTS,
+    payload: res.data,
+  });
+};
+
+export const GetProject = (id, history) => async (dispatch) => {
+  // if we want to pass the parameter with the url, use the below syntax
+  const res = await axios.get(`http://localhost:8080/api/project/${id}`);
+  dispatch({
+    type: GET_PROJECT,
     payload: res.data,
   });
 };
