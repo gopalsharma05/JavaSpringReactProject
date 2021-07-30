@@ -3,8 +3,10 @@ package com.example.SpringReactProjectTool.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.SpringReactProjectTool.domain.Backlog;
 import com.example.SpringReactProjectTool.domain.Project;
 import com.example.SpringReactProjectTool.exception.ProjectIdException;
+import com.example.SpringReactProjectTool.repository.BacklogRepository;
 import com.example.SpringReactProjectTool.repository.ProjectRepository;
 
 @Service
@@ -14,10 +16,29 @@ public class ProjectService {
 	@Autowired
 	private ProjectRepository projectRepository;
 	
+	@Autowired
+	private BacklogRepository backlogRepository;
+	
 	 public Project saveOrUpdateProject(Project project) {
 
 	       try {
-	    	   project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+	    	   String pid=project.getProjectIdentifier().toUpperCase();
+	    	   project.setProjectIdentifier(pid);
+	    	   
+	    	   if(project.getId()==null )  // backlog tb bnaan jb naya project create ho(usi ka id (not projectIdentifier)
+	    		   							// null hota hai) update krne wale ka nahi....
+	    	   {
+	    		   Backlog backlog=new Backlog();
+	    		   project.setBacklog(backlog);
+	    		   backlog.setProject(project);
+	    		   backlog.setProjectIdentifier(pid);
+	    	   }
+	    	   
+	    	   if (project.getId()!=null)
+	    	   {
+	    		   project.setBacklog(backlogRepository.findByProjectIdentifier(pid));
+	    	   }
+	    	   
 	    	   return projectRepository.save(project);
 	       }catch(Exception e)
 	       {
