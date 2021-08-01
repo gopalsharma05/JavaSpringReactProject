@@ -1,6 +1,7 @@
 package com.example.SpringReactProjectTool.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.SpringReactProjectTool.domain.Backlog;
@@ -48,6 +49,11 @@ public class ProjectTaskService {
 		}
 		
 		return projectTaskRepository.save(projectTask);
+	}
+	
+	public Iterable<ProjectTask> findBacklogById(String backlog_id)
+	{
+		return projectTaskRepository.findByProjectIdentifierOrderByPriority(backlog_id);
 	}
 	
 
