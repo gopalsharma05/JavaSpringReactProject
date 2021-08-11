@@ -10,5 +10,7 @@ import com.example.SpringReactProjectTool.domain.ProjectTask;
 @Repository
 public interface ProjectTaskRepository extends CrudRepository<ProjectTask, Long> {
 	
+	ProjectTask findByProjectSequence(String projectSequence);
+	
 	List<ProjectTask> findByProjectIdentifierOrderByPriority(String projectIdentifer);
 }
