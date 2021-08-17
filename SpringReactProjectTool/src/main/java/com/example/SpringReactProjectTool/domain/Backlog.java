@@ -32,8 +32,14 @@ public class Backlog {
     private Project project;  // "project"  should be exactly same which we use in oneToOne in Project class
 
     //OneToMany projectTasks
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "backlog")
+
+    @OneToMany(cascade = CascadeType.REFRESH,fetch = FetchType.EAGER,mappedBy = "backlog",orphanRemoval=true)
     private List<ProjectTask> projectTasks=new ArrayList<>();
+    
+    // Above REFRESH here means that whenever
+  //we delete any projectTask , it will refresh the Backlog, to see the updatedProject list in Backlog
+    // orphanRemoval means that when child of backlog is not referenced by backlog, then that child will
+    // removed automatically
 
     public Backlog() {
     }

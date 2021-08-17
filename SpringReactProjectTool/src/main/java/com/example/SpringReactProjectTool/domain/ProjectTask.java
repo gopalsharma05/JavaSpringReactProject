@@ -23,8 +23,7 @@ public class ProjectTask {
     private Date dueDate;
     //ManyToOne with Backlog
     
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.REFRESH)// REFRESH here means that whenever
-     																//we delete any projectTask , it will refresh the Backlog, to see the updatedProject list in Backlog
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "backlog_id",updatable=false,nullable=false)
     @JsonIgnore
     private Backlog backlog;
