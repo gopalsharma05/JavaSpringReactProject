@@ -47,7 +47,7 @@ public class ProjectTaskService {
 			projectTask.setProjectIdentifer(projectIdentifier);
 			
 			//set the priority
-			if(projectTask.getPriority()==null)  //projectTask.getPriority()==0 add this also with or(||) after UI complete
+			if(projectTask.getPriority()==0||projectTask.getPriority()==null)  //projectTask.getPriority()==0 add this also with or(||) after UI complete
 			{
 				projectTask.setPriority(3);
 			}

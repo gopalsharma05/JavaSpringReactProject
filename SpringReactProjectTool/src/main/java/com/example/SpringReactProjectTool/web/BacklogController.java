@@ -23,7 +23,7 @@ import com.example.SpringReactProjectTool.services.ProjectTaskService;
 
 @RestController
 @RequestMapping("/api/backlog")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 public class BacklogController {
 	
 	@Autowired
