@@ -14,8 +14,33 @@ const ProjectBoard = (props) => {
     // console.log("chaitanya ne dlwaaya");
   }, []);
 
-  const backlogs = useSelector((state) => state.backlog.project_tasks);
-  console.log("backlogs are", backlogs); //2 times rendering , :
+  const project_tasks = useSelector((state) => state.backlog.project_tasks);
+  const errors = useSelector((state) => state.errors);
+  console.log("backlogs are", project_tasks); //2 times rendering , :
+
+  let BoardContent;
+
+  const boardAlgorithm = (errors, project_tasks) => {
+    if (project_tasks.length < 1) {
+      if (errors.projectNotFound) {
+        return (
+          <div className="alert alert-danger text-center" role="alert">
+            {errors.projectNotFound}
+          </div>
+        );
+      } else {
+        return (
+          <div className="alert alert-info text-center" role="alert">
+            No Project Tasks on this board
+          </div>
+        );
+      }
+    } else {
+      return <Backlog project_tasks={project_tasks} />;
+    }
+  };
+
+  BoardContent = boardAlgorithm(errors, project_tasks);
 
   return (
     <div className="container">
@@ -25,7 +50,7 @@ const ProjectBoard = (props) => {
       <br />
       <hr />
 
-      <Backlog project_tasks={backlogs} />
+      {BoardContent}
     </div>
   );
 };

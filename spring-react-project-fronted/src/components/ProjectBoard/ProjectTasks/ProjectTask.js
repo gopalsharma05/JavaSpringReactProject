@@ -1,3 +1,8 @@
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
+import { deleteProjectTask } from "../../../actions/BacklogActions";
+
 const ProjectTask = (props) => {
   const task = props.project_task;
   let priorityClass;
@@ -13,6 +18,14 @@ const ProjectTask = (props) => {
     priorityString = "Low";
   }
 
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const deleteHandler = () => {
+    dispatch(
+      deleteProjectTask(task.projectIdentifer, task.projectSequence, history)
+    );
+  };
+
   return (
     <div className="card mb-1 bg-light">
       <div className={`card-header text-primary ${priorityClass}`}>
@@ -21,11 +34,16 @@ const ProjectTask = (props) => {
       <div className="card-body bg-light">
         <h5 className="card-title">{task.summary}</h5>
         <p className="card-text text-truncate ">{task.acceptanceCriteria}</p>
-        <a href="#" className="btn btn-primary">
+        <Link
+          to={`/updateProjectTask/${task.projectIdentifer}/${task.projectSequence}`}
+          className="btn btn-primary"
+        >
           View / Update
-        </a>
+        </Link>
 
-        <button className="btn btn-danger ml-4">Delete</button>
+        <button className="btn btn-danger ml-4" onClick={deleteHandler}>
+          Delete
+        </button>
       </div>
     </div>
   );
