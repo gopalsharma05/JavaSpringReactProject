@@ -59,6 +59,23 @@ public class User implements UserDetails  {
 	
 	
 	
+	
+	
+	
+	public List<Project> getProjects() {
+		return projects;
+	}
+
+
+
+
+	public void setProjects(List<Project> projects) {
+		this.projects = projects;
+	}
+
+
+
+
 	public User() {
 		
 	}
