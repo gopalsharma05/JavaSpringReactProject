@@ -12,12 +12,19 @@ import static com.example.SpringReactProjectTool.security.SecurityConstants.SECR
 
 import com.example.SpringReactProjectTool.domain.User;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 
 @Component
 public class JwtTokenProvider {
 	
+	
+	//for generating the token
 	public String generateToken(Authentication authentication)
 	{
 		User user=(User) authentication.getPrincipal();   //getting the user
@@ -43,5 +50,54 @@ public class JwtTokenProvider {
 		
 		
 	}
+	
+	
+	
+	// for validate the token
+	
+	public boolean validateToken(String token)
+	{
+		try {
+			Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
+			return true;
+			
+		}
+		catch(SignatureException ex)
+		{
+			System.out.println("Invalid JWT Signature");
+		}
+		catch(MalformedJwtException ex)
+		{
+			System.out.println("Invalid JWT token");
+		}
+		catch(ExpiredJwtException ex)
+		{
+			System.out.println("token has been expired");
+		}
+		catch(UnsupportedJwtException ex)
+		{
+			System.out.println("Unsupported JWT token");
+		}
+		catch(IllegalArgumentException ex)
+		{
+			System.out.println("JWT claims string is empty");
+		}
+		
+		return false;
+	}
+	
+	
+	//getting the id from token
+	
+	
+	public Long getUserIdFromJWT(String token)
+	{
+			Claims claims=Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
+			String id=(String)claims.get("id");
+			return Long.parseLong(id);
+	}
+	
+	
+	
 
 }
