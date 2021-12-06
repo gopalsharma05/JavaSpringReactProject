@@ -15,6 +15,12 @@ const Signup = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
+  const { validToken } = useSelector((state) => state.security);
+  if (validToken) {
+    console.log("inside the Singup");
+    history.push("/dashboard");
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("user in signup component ", user);

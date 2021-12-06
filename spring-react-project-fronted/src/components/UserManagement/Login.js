@@ -13,6 +13,12 @@ const Login = () => {
 
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const { validToken } = useSelector((state) => state.security);
+  if (validToken) {
+    history.push("/dashboard");
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 

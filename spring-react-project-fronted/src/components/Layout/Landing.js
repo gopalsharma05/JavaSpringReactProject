@@ -1,6 +1,14 @@
 import { Link } from "react-router-dom";
-
+import { useHistory } from "react-router";
+import { useSelector } from "react-redux";
 const Landing = () => {
+  const history = useHistory();
+
+  const { validToken } = useSelector((state) => state.security);
+  if (validToken) {
+    history.push("/dashboard");
+  }
+
   return (
     <div className="landing">
       <div className="light-overlay landing-inner text-dark">

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import classnames from "classnames";
+import { useRef } from "react";
 import {
   getProjectTask,
   updateProjectTask,
@@ -14,12 +15,16 @@ const UpdateProjectTask = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  useEffect(async () => {
-    await dispatch(getProjectTask(backlog_id, pt_id, history));
+  useEffect(() => {
+    dispatch(getProjectTask(backlog_id, pt_id, history));
+    console.log("first");
   }, []);
 
-  const data = useSelector((state) => state.backlog.project_task);
   // const tempData = data;
+  // const data = useRef(mydata);
+
+  const data = useSelector((state) => state.backlog.project_task);
+
   console.log("project Task for updating", data);
 
   const [projectTaskUpdate, setProjectTaskUpdate] = useState({
