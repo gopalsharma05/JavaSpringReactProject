@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import classnames from "classnames";
 import { useRef } from "react";
+import isEmpty from "lodash/isEmpty";
 import {
   getProjectTask,
   updateProjectTask,
@@ -15,29 +16,35 @@ const UpdateProjectTask = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const [projectTaskUpdate, setProjectTaskUpdate] = useState({});
+
+  const data = useSelector((state) => state.backlog.project_task);
+
   useEffect(() => {
-    dispatch(getProjectTask(backlog_id, pt_id, history));
+    setProjectTaskUpdate({
+      summary: data.summary,
+      acceptanceCriteria: data.acceptanceCriteria,
+      dueDate: data.dueDate,
+      priority: data.priority,
+      status: data.status,
+      projectIdentifer: data.projectIdentifer,
+      projectSequence: data.projectSequence,
+      id: data.id,
+      create_At: data.create_At,
+    });
+  }, [data]);
+
+  useEffect(() => {
+    if (isEmpty(data)) {
+      dispatch(getProjectTask(backlog_id, pt_id, history));
+    }
     console.log("first");
   }, []);
 
   // const tempData = data;
   // const data = useRef(mydata);
 
-  const data = useSelector((state) => state.backlog.project_task);
-
   console.log("project Task for updating", data);
-
-  const [projectTaskUpdate, setProjectTaskUpdate] = useState({
-    summary: data.summary,
-    acceptanceCriteria: data.acceptanceCriteria,
-    dueDate: data.dueDate,
-    priority: data.priority,
-    status: data.status,
-    projectIdentifer: data.projectIdentifer,
-    projectSequence: data.projectSequence,
-    id: data.id,
-    create_At: data.create_At,
-  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
